@@ -143,12 +143,12 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
             if row > 0:
                 dlg.bomGrid.AppendRows()
             dlg.bomGrid.SetCellValue(row, 0, str(bom_items[name]['Qty']))
+            if bom_items[name]['PROD_ID'] == "NONE":
+                dlg.bomGrid.SetCellTextColour(row, 1, wx.RED)
             dlg.bomGrid.SetCellValue(row, 1, str(bom_items[name]['PROD_ID']))
             dlg.bomGrid.SetCellValue(row, 2, str(bom_items[name]['Refs']))
             dlg.bomGrid.SetCellValue(row, 3, str(bom_items[name]['Value']))
             dlg.bomGrid.SetCellValue(row, 4, str(bom_items[name]['Package']))
-            if bom_items[name]['PROD_ID'] == "NONE":
-                dlg.bomGrid.SetCellTextColour(row, 1, wx.RED)
             row += 1
 
         # Copy non_bom_items into grid

@@ -21,7 +21,7 @@ _ = gettext.gettext
 class DIALOG_TEXT_BASE ( wx.Dialog ):
 
     def __init__( self, parent ):
-        wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"SparkFun KiCad BOM Generator"), pos = wx.DefaultPosition, size = wx.Size( 450,550 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER|wx.SYSTEM_MENU )
+        wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"SparkFun KiCad BOM Generator"), pos = wx.DefaultPosition, size = wx.Size( 900,650 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER|wx.SYSTEM_MENU )
 
         self.SetSizeHints( wx.Size( -1,-1 ), wx.DefaultSize )
 
@@ -47,7 +47,7 @@ class DIALOG_TEXT_BASE ( wx.Dialog ):
 
         bomSizer.Add( self.bomLabel, 0, wx.ALIGN_LEFT|wx.ALL|wx.EXPAND, 5 )
 
-        self.bomGrid = wx.grid.Grid( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.FULL_REPAINT_ON_RESIZE )
+        self.bomGrid = wx.grid.Grid( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 
         # Grid
         self.bomGrid.CreateGrid( 1, 5 )
@@ -102,7 +102,7 @@ class DIALOG_TEXT_BASE ( wx.Dialog ):
 
         nonBomSizer.Add( self.nonBomLabel, 0, wx.ALIGN_LEFT|wx.ALL|wx.EXPAND, 5 )
 
-        self.nonBomGrid = wx.grid.Grid( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.FULL_REPAINT_ON_RESIZE )
+        self.nonBomGrid = wx.grid.Grid( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 
         # Grid
         self.nonBomGrid.CreateGrid( 1, 4 )

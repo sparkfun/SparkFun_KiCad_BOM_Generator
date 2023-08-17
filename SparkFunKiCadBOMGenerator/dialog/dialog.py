@@ -71,6 +71,8 @@ class Dialog(dialog_text_base.DIALOG_TEXT_BASE):
             newWidth = -1
         self.nonBomGrid.SetColSize(cols - 1, newWidth)
 
+        #self.SetTitle(_APP_NAME + " - " + _APP_VERSION + "   {}x{}".format(size.width, size.height))
+
         if event is not None:
             event.Skip()
 
