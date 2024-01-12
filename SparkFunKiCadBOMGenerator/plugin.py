@@ -91,7 +91,13 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
                     if prod_id == "":
                         prod_id = "NONE"
                     elif "-" not in prod_id:
-                        prod_id = "INVALID_{}".format(prod_id)
+                        prod_id = "INVALID"
+                    else:
+                        head_tail = prod_id.split("-")
+                        if (len(head_tail[0]) == 0) or (len(head_tail[1]) == 0):
+                            prod_id = "INVALID"
+                        if not head_tail[1].isnumeric():
+                            prod_id = "INVALID"
                 uniqueRef = name + val + prod_id
                 if hasProdID:
                     if prod_id != "NONE" and "INVALID" not in prod_id:
@@ -139,26 +145,26 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
                         non_bom_items[uniqueRef]['Package'] = name
 
         # Copy bom_items into grid
-        dlg.bomGrid.CreateGrid( len(bom_items.keys()), 5 )
+        none_invalid = False
+        dlg.bomGrid.CreateGrid( 0, 5 )
+        dlg.bomGrid.AppendRows(len(bom_items.keys()))
         row = 0
         for name in bom_items.keys():
-            if row > 0:
-                dlg.bomGrid.AppendRows()
             dlg.bomGrid.SetCellValue(row, 0, str(bom_items[name]['Qty']))
-            if bom_items[name]['PROD_ID'] == "NONE":
-                dlg.bomGrid.SetCellTextColour(row, 1, wx.RED)
             dlg.bomGrid.SetCellValue(row, 1, str(bom_items[name]['PROD_ID']))
+            if ("NONE" in bom_items[name]['PROD_ID']) or ("INVALID" in bom_items[name]['PROD_ID']):
+                dlg.bomGrid.SetCellBackgroundColour(row, 1, wx.RED)
+                none_invalid = True
             dlg.bomGrid.SetCellValue(row, 2, str(bom_items[name]['Refs']))
             dlg.bomGrid.SetCellValue(row, 3, str(bom_items[name]['Value']))
             dlg.bomGrid.SetCellValue(row, 4, str(bom_items[name]['Package']))
             row += 1
 
         # Copy non_bom_items into grid
-        dlg.nonBomGrid.CreateGrid( len(non_bom_items.keys()), 4 )
+        dlg.nonBomGrid.CreateGrid( 0, 4 )
+        dlg.nonBomGrid.AppendRows(len(non_bom_items.keys()))
         row = 0
         for name in non_bom_items.keys():
-            if row > 0:
-                dlg.nonBomGrid.AppendRows()
             dlg.nonBomGrid.SetCellValue(row, 0, str(non_bom_items[name]['Qty']))
             dlg.nonBomGrid.SetCellValue(row, 1, str(non_bom_items[name]['Refs']))
             dlg.nonBomGrid.SetCellValue(row, 2, str(non_bom_items[name]['Value']))
@@ -173,8 +179,12 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
         dlg.nonBomGrid.AutoSizeColumns()
 
         try:
-            dlg.ShowModal()
+            if none_invalid:
+                wx.MessageBox("Empty or invalid PROD_IDs found!\nCheck BOM for details.",
+                            'Error', wx.OK | wx.ICON_ERROR)
 
+            dlg.ShowModal()
+            
         finally:
             dlg.Destroy()
                         
