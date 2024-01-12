@@ -90,9 +90,11 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
                 if hasProdID:
                     if prod_id == "":
                         prod_id = "NONE"
+                    elif "-" not in prod_id:
+                        prod_id = "INVALID_{}".format(prod_id)
                 uniqueRef = name + val + prod_id
                 if hasProdID:
-                    if prod_id != "NONE":
+                    if prod_id != "NONE" and "INVALID" not in prod_id:
                         prodIdNum = prod_id.split("-")[1]
                         while prodIdNum[0] == "0":
                             prodIdNum = prodIdNum[1:]
