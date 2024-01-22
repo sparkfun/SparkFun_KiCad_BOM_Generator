@@ -12,9 +12,7 @@ This is a simple BOM generator and is very SparkFun-specific. It lists all board
 
 ## Installation and Usage
 
-Open the KiCad Plugin and Content Manager (PCM) from the main window and filter for `SparkFun BOM`.
-
-To install manually, open the [GitHub Repo Releases page](https://github.com/sparkfun/SparkFun_KiCad_BOM_Generator/releases) and download the `SparkFunKiCadBOMGenerator-pcm.zip` file attached to the latest release. Then use the PCM _**Install from File...**_ option and select the .zip file to install it. For best results, **Uninstall** the previous version first, **Apply Pending Changes**, and then **Install from File...**.
+The BOM Generator is not registered in the KiCad Plugin and Content Manager (PCM). To install manually, open the [GitHub Repo Releases page](https://github.com/sparkfun/SparkFun_KiCad_BOM_Generator/releases) and download the `SparkFunKiCadBOMGenerator-pcm.zip` file attached to the latest release. Then use the PCM _**Install from File...**_ option and select the .zip file to install it. For best results, **Uninstall** the previous version first, **Apply Pending Changes**, and then **Install from File...**.
 
 ![Install manually](./img/install_from_file.png)
 
