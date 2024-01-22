@@ -34,7 +34,7 @@ Special thanks to [@qu1ck](https://github.com/qu1ck) for the original BOM plugin
 The plugin GUI itself is designed with [wxFormBuilder](https://github.com/wxFormBuilder/wxFormBuilder/releases) and stored in `text_dialog.fbp`.
 Copy and paste the wx Python code from wxFormBuilder into `./SparkFunKiCadBOMGenerator/dialog/dialog_text_base.py`.
 
-`.github/workflows/build_asset_release.yml` generates the .zip file containing the plugin Python code (`./plugins`), icon (`./resources`) and the Plugin and Content Manager (PCM) `metadata.json`. The workflow automatically attaches the zip file to each release as an asset. Edit `./SparkFunKiCadBOMGenerator/resource/_version.py` first and update the version number. `build.py` is called by the workflow, copies `metadata_template.json` into `metadata.json` and then updates it with the correct version and download URL. The version number is also added to the .zip filename. The PCM should automatically download and install new versions of the BOM generator for you.
+`.github/workflows/build_asset_release.yml` generates the .zip file containing the plugin Python code (`./plugins`), icon (`./resources`) and the Plugin and Content Manager (PCM) `metadata.json`. The workflow automatically attaches the zip file to each release as an asset. Edit `./SparkFunKiCadBOMGenerator/resource/_version.py` first and update the version number. `build.py` is called by the workflow, copies `metadata_template.json` into `metadata.json` and then updates it with the correct version and download URL. The version number is also added to the .zip filename. New versions of the BOM generator need to be installed manually, it is not registered in the KiCad Plugin and Content Manager (PCM).
 
 - Your friends at SparkFun
 
