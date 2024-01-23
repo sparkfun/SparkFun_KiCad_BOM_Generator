@@ -169,7 +169,23 @@ class DIALOG_TEXT_BASE ( wx.Dialog ):
 
         self.Centre( wx.BOTH )
 
+        # Connect Events
+        self.Bind( wx.EVT_SHOW, self.OnShowEvent )
+        self.bomGrid.Bind( wx.grid.EVT_GRID_LABEL_LEFT_CLICK, self.OnBOMGridLabelClicked )
+        self.nonBomGrid.Bind( wx.grid.EVT_GRID_LABEL_LEFT_CLICK, self.OnNonBOMGridLabelClicked )
+
     def __del__( self ):
+        pass
+
+
+    # Virtual event handlers, override them in your derived class
+    def OnShowEvent( self, event ):
+        pass
+
+    def OnBOMGridLabelClicked( self, event ):
+        pass
+
+    def OnNonBOMGridLabelClicked( self, event ):
         pass
 
 

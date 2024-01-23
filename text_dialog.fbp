@@ -56,6 +56,7 @@
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style"></property>
+            <event name="OnShow">OnShowEvent</event>
             <object class="wxFlexGridSizer" expanded="1">
                 <property name="cols">1</property>
                 <property name="flexible_direction">wxBOTH</property>
@@ -231,6 +232,7 @@
                                 <property name="window_extra_style"></property>
                                 <property name="window_name"></property>
                                 <property name="window_style"></property>
+                                <event name="OnGridLabelLeftClick">OnBOMGridLabelClicked</event>
                             </object>
                         </object>
                     </object>
@@ -456,6 +458,7 @@
                                 <property name="window_extra_style"></property>
                                 <property name="window_name"></property>
                                 <property name="window_style"></property>
+                                <event name="OnGridLabelLeftClick">OnNonBOMGridLabelClicked</event>
                             </object>
                         </object>
                     </object>
