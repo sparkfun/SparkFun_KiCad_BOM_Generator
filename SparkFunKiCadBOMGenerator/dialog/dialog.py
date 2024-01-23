@@ -43,6 +43,10 @@ class Dialog(dialog_text_base.DIALOG_TEXT_BASE):
         self.SetTitle(_APP_NAME + " - " + _APP_VERSION)
 
         self.Bind(wx.EVT_SIZE, self.OnSize)
+
+        self.bomSortCol = -1
+        self.bomSortAscending = True
+        self.nonBomSortAscending = False
         
     def OnSize(self, event):
         size = self.GetClientSize()
@@ -75,5 +79,80 @@ class Dialog(dialog_text_base.DIALOG_TEXT_BASE):
 
         if event is not None:
             event.Skip()
+
+    def OnBOMGridLabelClicked(self, event):
+        if event.Col <= 1:
+            if self.bomSortCol == event.Col:
+                self.bomSortAscending = not self.bomSortAscending
+            else:
+                self.bomSortCol = event.Col
+
+            rows = self.bomGrid.GetNumberRows() - 1 # Ignore the empty final row
+            cols = self.bomGrid.GetNumberCols()
+
+            def compareVals(col, ascending, val1, val2):
+                if col == 0 and ascending:
+                    if val1[0] == val2[0]: # If the Qty is equal, sort on ascending PROD_ID
+                        return (val1[1] < val2[1])
+                    return (int(val1[0]) < int(val2[0]))
+                elif col == 0 and not ascending:
+                    if val1[0] == val2[0]: # If the Qty is equal, sort on ascending PROD_ID
+                        return (val1[1] < val2[1])
+                    return (int(val1[0]) > int(val2[0]))
+                elif col == 1 and ascending:
+                    return (val1[1] < val2[1])
+                elif col == 1 and not ascending:
+                    return (val1[1] > val2[1])
+                return False
+                
+            for row1 in range(rows):
+                for row2 in range(rows):
+                    cells1 = []
+                    cells2 = []
+                    for col in range(cols):
+                        cells1.append(self.bomGrid.GetCellValue(row1, col))
+                        cells2.append(self.bomGrid.GetCellValue(row2, col))
+                    background1 = self.bomGrid.GetCellBackgroundColour(row1, 1)
+                    background2 = self.bomGrid.GetCellBackgroundColour(row2, 1)
+                    if compareVals(self.bomSortCol, self.bomSortAscending, cells1, cells2):
+                        for col in range(cols):
+                            self.bomGrid.SetCellValue(row1, col, cells2[col])
+                            self.bomGrid.SetCellValue(row2, col, cells1[col])
+                        self.bomGrid.SetCellBackgroundColour(row1, 1, background2)
+                        self.bomGrid.SetCellBackgroundColour(row2, 1, background1)
+
+        self.bomGrid.Refresh()
+
+    def OnNonBOMGridLabelClicked(self, event):
+        if event.Col == 0:
+            self.nonBomSortAscending = not self.nonBomSortAscending
+
+            rows = self.nonBomGrid.GetNumberRows() - 1 # Ignore the empty final row
+            cols = self.nonBomGrid.GetNumberCols()
+
+            def compareVals(ascending, val1, val2):
+                if ascending:
+                    return (int(val1[0]) < int(val2[0]))
+                return (int(val1[0]) > int(val2[0]))
+                
+            for row1 in range(rows):
+                for row2 in range(rows):
+                    cells1 = []
+                    cells2 = []
+                    for col in range(cols):
+                        cells1.append(self.nonBomGrid.GetCellValue(row1, col))
+                        cells2.append(self.nonBomGrid.GetCellValue(row2, col))
+                    if compareVals(self.nonBomSortAscending, cells1, cells2):
+                        for col in range(cols):
+                            self.nonBomGrid.SetCellValue(row1, col, cells2[col])
+                            self.nonBomGrid.SetCellValue(row2, col, cells1[col])
+
+        self.nonBomGrid.Refresh()
+
+    def OnShowEvent(self, event):
+        self.bomGrid.Refresh() # This may help the cell background color?
+        
+
+
 
 
