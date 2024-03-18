@@ -38,12 +38,6 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
 
         self.kicad_build_version = pcbnew.GetBuildVersion()
 
-    def IsVersion(self, VersionStr):
-        for v in VersionStr:
-            if v in self.kicad_build_version:
-                return True
-        return False
-
     def Run(self):
         if self._pcbnew_frame is None:
             try:
