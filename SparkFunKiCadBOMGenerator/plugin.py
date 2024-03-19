@@ -36,7 +36,7 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
         
         self._pcbnew_frame = None
 
-        self.kicad_build_version = pcbnew.GetBuildVersion()
+        self.baseVersion = pcbnew.GetBuildVersion().split('.')[0] # Use GetBuildVersion. GetBaseVersion is only available in KiCad 8
 
     def Run(self):
         if self._pcbnew_frame is None:
@@ -77,9 +77,15 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
                     name = name.split(":")[1]
                 prod_id = ""
                 hasProdID = False
-                if sourceModule.HasFieldByName("PROD_ID"): # Breaking change for KiCad 8
-                    prod_id = sourceModule.GetFieldText("PROD_ID") # Breaking change for KiCad 8
-                    hasProdID = True
+                if self.baseVersion < '8':
+                    if hasattr(sourceModule, "HasProperty"):
+                        if sourceModule.HasProperty("PROD_ID"):
+                            prod_id = sourceModule.GetPropertyNative("PROD_ID")
+                            hasProdID = True
+                else:
+                    if sourceModule.HasFieldByName("PROD_ID"): # Breaking change for KiCad 8
+                        prod_id = sourceModule.GetFieldText("PROD_ID") # Breaking change for KiCad 8
+                        hasProdID = True
                 if hasProdID:
                     if prod_id == "":
                         prod_id = ">> EMPTY <<"
