@@ -1,1 +1,1 @@
-from .SparkFunKiCadPanelizer import plugin
+from .SparkFunKiCadBOMGenerator import plugin
