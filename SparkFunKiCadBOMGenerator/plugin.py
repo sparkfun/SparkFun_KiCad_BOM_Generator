@@ -69,6 +69,8 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
             for footprint in self.unwanted_footprints: # Check for KiBuzzard etc.
                 if footprint in pack:
                     unwanted = True
+            if sourceModule.IsExcludedFromBOM():
+                unwanted = True
             if not unwanted:
                 ref = sourceModule.Reference().GetText()
                 val = sourceModule.Value().GetText()
@@ -98,7 +100,7 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
                         if not head_tail[1].isnumeric():
                             prod_id = ">> INVALID <<"
                 uniqueRef = name + val + prod_id
-                if hasProdID:
+                if hasProdID and not sourceModule.IsDNP():
                     if "EMPTY" not in prod_id and "INVALID" not in prod_id:
                         prodIdNum = prod_id.split("-")[1]
                         while prodIdNum[0] == "0":
