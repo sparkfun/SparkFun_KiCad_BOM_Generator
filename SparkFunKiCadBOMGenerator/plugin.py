@@ -100,7 +100,10 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
                         if not head_tail[1].isnumeric():
                             prod_id = ">> INVALID <<"
                 uniqueRef = name + val + prod_id
-                if hasProdID and not sourceModule.IsDNP():
+                DNP = False
+                if self.baseVersion >= '8':
+                    DNP = sourceModule.IsDNP()
+                if hasProdID and not DNP:
                     if "EMPTY" not in prod_id and "INVALID" not in prod_id:
                         prodIdNum = prod_id.split("-")[1]
                         while prodIdNum[0] == "0":
