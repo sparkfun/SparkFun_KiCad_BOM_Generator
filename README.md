@@ -1,6 +1,6 @@
-# SparkFun PCB BOM Generator plugin for KiCad 7 / 8
+# SparkFun PCB BOM Generator plugin for KiCad versions 7/8/9
 
-This plugin generates the Bill Of Materials (BOM) for a KiCad 7 / 8 PCB.
+This plugin generates the Bill Of Materials (BOM) for a KiCad version 7, 8, and 9.
 
 ![BOM Generator](./img/bom_generator.png)
 
