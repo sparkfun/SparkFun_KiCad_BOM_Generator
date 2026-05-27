@@ -36,9 +36,9 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
 
         self._pcbnew_frame = None
 
-        self.baseVersion = pcbnew.GetBuildVersion().split(".")[
-            0
-        ]  # Use GetBuildVersion. GetBaseVersion is only available in KiCad 8
+        self.baseVersion = int(
+            pcbnew.GetBuildVersion().split(".")[0]
+        )  # Use GetBuildVersion. GetBaseVersion is only available in KiCad 8
 
     def Run(self):
         if self._pcbnew_frame is None:
@@ -89,18 +89,22 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
                     name = name.split(":")[1]
                 prod_id = ""
                 hasProdID = False
-                if self.baseVersion < "8":
+                if self.baseVersion < 8:
                     if hasattr(sourceModule, "HasProperty"):
                         if sourceModule.HasProperty("PROD_ID"):
                             prod_id = sourceModule.GetPropertyNative("PROD_ID")
                             hasProdID = True
-                else:
+                if self.baseVersion == 9:
                     if sourceModule.HasFieldByName(
                         "PROD_ID"
                     ):  # Breaking change for KiCad 8
                         prod_id = sourceModule.GetFieldText(
                             "PROD_ID"
                         )  # Breaking change for KiCad 8
+                        hasProdID = True
+                else:
+                    if sourceModule.HasField("PROD_ID"):
+                        prod_id = sourceModule.GetField("PROD_ID").GetText()
                         hasProdID = True
                 if hasProdID:
                     if prod_id == "":
@@ -115,7 +119,7 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
                             prod_id = ">> INVALID <<"
                 uniqueRef = name + val + prod_id
                 DNP = False
-                if self.baseVersion >= "8":
+                if self.baseVersion >= 8:
                     DNP = sourceModule.IsDNP()
                 if hasProdID and not DNP:
                     if "EMPTY" not in prod_id and "INVALID" not in prod_id:
@@ -220,4 +224,3 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
 
         finally:
             dlg.Destroy()
-
