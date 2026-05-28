@@ -94,7 +94,7 @@ class BomGeneratorPlugin(pcbnew.ActionPlugin, object):
                         if sourceModule.HasProperty("PROD_ID"):
                             prod_id = sourceModule.GetPropertyNative("PROD_ID")
                             hasProdID = True
-                if self.baseVersion == 9:
+                elif self.baseVersion == 9:
                     if sourceModule.HasFieldByName(
                         "PROD_ID"
                     ):  # Breaking change for KiCad 8
